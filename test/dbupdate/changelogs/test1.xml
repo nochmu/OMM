@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<changeLog
+        xmlns="http://noctaru.de/omm/changelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://noctaru.de/omm/changelog http://noctaru.de/omm/Changelog.xsd">
+
+
+    <changeSet id="create-common-tables">
+        <createSequence name="DEFAULT_SEQ" />
+        <createTable name="LANGUAGES_TBL">
+            <column name="id"    type="number(4)"   default="DEFAULT_SEQ.nextval" defaultType="computed"  comment="user was created on" />
+            <column name="key2"  type="varchar2(4)" comment="2 char key if exists" />
+            <column name="key3"  type="varchar2(3)" comment="3 char unique key" />
+            <primaryKey columns="id" name="LANGUAGES_TBL_PK"/>
+            <unique columns="key2"   name="LANGUAGES_TBL_KEY2_UK"/>
+            <unique columns="key3"   name="LANGUAGES_TBL_KEY3_UK"/>
+            <check  condition="key3 is not NULL" name="LANGUAGES_TBL_KEY3_CK" />
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="create-usertable">
+        <createTable name="USER_ACCOUNTS">
+            <column name="id"           type="number"   comment="user id" />
+            <column name="created_on"   type="date" comment="user was created on" />
+            <column name="username"     type="varchar2(64)" comment="alphanumeric userkey" />
+            <primaryKey columns="id" name="USER_ACCOUNTS_PK"/>
+            <unique columns="username" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add-default-lang">
+        <alterTable name="USER_ACCOUNTS">
+            <column name="ui_lang_id" type="number" />
+            <check condition="ui_lang_id is not null" name="USER_ACCOUNTS_UI_LANG_NN"/>
+            <foreignKey columns="ui_lang_id" foreignTable="LANGUAGES_TBL" foreignColumns="id" name="USER_ACCOUNTS_UI_LANG_FK"/>
+        </alterTable>
+    </changeSet>
+
+
+</changeLog>

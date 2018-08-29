@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<changeLog
+        xmlns="http://noctaru.de/omm/changelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://noctaru.de/omm/changelog http://noctaru.de/omm/Changelog.xsd">
+
+
+    <changeSet id="test">
+        <createSequence name="test1_seq" />
+        <createSequence name="test2_seq" start="5" />
+        <createSequence name="test3_seq" cycle="true" max="10" />
+    </changeSet>
+
+</changeLog>

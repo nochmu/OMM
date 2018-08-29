@@ -1,0 +1,14 @@
+{
+  "name": "HELLO_WORLD",
+  "version": "0.0.0.1-dev",
+  "description": "A simple Hello-World module",
+
+  "install_mode" : "single-object",
+
+  "export" : "MAIN",
+  "own_schema" : true,
+
+  "create_user" : "create_user.sql",
+  "create_objects" : "install.sql"
+
+}

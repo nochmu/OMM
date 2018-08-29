@@ -1,0 +1,10 @@
+{
+  "name": "plsql_package",
+  "version": "0.0.0.1-dev",
+  "description": "A simple PLSQL-Package"
+
+  "scripts" : {
+    "install" : "install.sql"
+  }
+
+}

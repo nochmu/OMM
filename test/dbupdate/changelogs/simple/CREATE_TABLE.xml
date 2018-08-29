@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<changeLog
+        xmlns="http://noctaru.de/omm/changelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://noctaru.de/omm/changelog http://noctaru.de/omm/Changelog.xsd">
+
+
+    <changeSet id="test">
+        <createTable name="TEST_TBL">
+            <column name="A" type="varchar2(60)" />
+            <column name="B" type="varchar2(60)" comment="Column B"/>
+        </createTable>
+    </changeSet>
+
+</changeLog>

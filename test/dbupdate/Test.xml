@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--  -->
+
+<changeLog
+        xmlns="http://noctaru.de/omm/changelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://noctaru.de/omm/changelog http://noctaru.de/omm/Changelog.xsd">
+
+    <changeSet id="">
+        <createTable name="">
+            <column name="" type=""/>
+            <primaryKey columns="sfe"/>
+        </createTable>
+    </changeSet>
+
+</changeLog>

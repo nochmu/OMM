@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://noctaru.de/omm/changelog"
+           xmlns="http://noctaru.de/omm/changelog">
+
+
+
+    <xs:simpleType name="defaultType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="string"/>
+            <xs:enumeration value="numeric"/>
+            <xs:enumeration value="date"/>
+            <xs:enumeration value="computed"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:element name="changeLog">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="changeSet" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="changeSet">
+        <xs:complexType>
+            <xs:choice minOccurs="1"  maxOccurs="unbounded">
+                <xs:element ref="createTable"/>
+                <xs:element ref="createSequence"/>
+                <xs:element ref="addPrimaryKey"/>
+                <xs:element ref="alterTable"/>
+            </xs:choice>
+            <xs:attribute type="xs:string" name="id" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="column">
+        <xs:attribute name="name"       type="xs:string"   use="required"/>
+        <xs:attribute name="type"        type="xs:string"   use="required"/>
+        <xs:attribute name="default"     type="xs:string"   use="optional"/>
+        <xs:attribute name="defaultType" type="defaultType" use="optional" default="string"/>
+        <xs:attribute name="comment"     type="xs:string"   use="optional"/>
+    </xs:complexType>
+    <xs:element name="column" type="column" />
+
+
+
+    <xs:group name="constraints">
+        <xs:sequence >
+            <xs:element ref="primaryKey"  minOccurs="0" maxOccurs="1" />
+            <xs:element ref="unique"      minOccurs="0"  />
+            <xs:element ref="foreignKey"  minOccurs="0"  />
+            <xs:element ref="check"       minOccurs="0"  />
+        </xs:sequence>
+    </xs:group>
+
+    <xs:element name="createTable">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="column"      minOccurs="1" maxOccurs="unbounded"/>
+                <xs:group   ref="constraints" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="name" use="required"/>
+            <xs:attribute type="xs:string" name="comment" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createSequence">
+        <xs:complexType>
+            <xs:attribute type="xs:string" name="name" use="required"/>
+            <xs:attribute type="xs:integer" name="start" use="optional"/>
+            <xs:attribute type="xs:integer" name="increment" use="optional"/>
+            <xs:attribute type="xs:integer" name="max" use="optional"/>
+            <xs:attribute type="xs:integer" name="min" use="optional"/>
+            <xs:attribute type="xs:boolean" name="ordered" use="optional"/>
+            <xs:attribute type="xs:boolean" name="cycle" use="optional"/>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:complexType name="primaryKey" >
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="columns" use="required"/>
+    </xs:complexType>
+    <xs:element name="primaryKey" type="primaryKey"/>
+
+    <xs:complexType name="unique">
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="columns" use="required"/>
+    </xs:complexType>
+    <xs:element name="unique" type="unique"/>
+
+    <xs:complexType name="foreignKey">
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="columns" use="required"/>
+        <xs:attribute type="xs:string" name="foreignTable" use="required"/>
+        <xs:attribute type="xs:string" name="foreignColumns" use="required"/>
+    </xs:complexType>
+    <xs:element name="foreignKey" type="foreignKey"/>
+
+    <xs:complexType name="check">
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="condition" use="required"/>
+    </xs:complexType>
+    <xs:element name="check" type="check"/>
+
+
+    <xs:element name="addColumn">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="column">
+                    <xs:attribute type="xs:string" name="table" />
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addPrimaryKey">
+    <xs:complexType>
+        <xs:complexContent>
+            <xs:extension base="primaryKey">
+                <xs:attribute type="xs:string" name="table" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addUnique">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="unique">
+                    <xs:attribute type="xs:string" name="table" />
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addCheck">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="check">
+                    <xs:attribute type="xs:string" name="table" />
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addForeignKey">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="foreignKey">
+                    <xs:attribute type="xs:string" name="table" />
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+
+
+    <xs:element name="alterTable">
+    <xs:complexType>
+        <xs:sequence >
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="column"    />
+                <xs:group   ref="constraints" />
+            </xs:choice>
+        </xs:sequence>
+      <xs:attribute type="xs:string" name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+
+</xs:schema>
